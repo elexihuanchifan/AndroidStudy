@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.administrator.myapplication">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.CircleAcivity"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity android:name=".activity.TimeActivity" />
+
+        <activity android:name=".activity.UploadByDateActivity" />
+
+        <activity android:name=".activity.ShowLineActivity" />
+
+        <activity android:name=".activity.CalendarActivity" />
+
+        <activity android:name=".activity.RippleActivity" />
+
+        <activity android:name=".activity.DialChartActivity" />
+
+        <activity android:name=".activity.ScatterActivity" />
+
+        <service android:name=".AIDLService"></service>
+
+    </application>
+
+</manifest>

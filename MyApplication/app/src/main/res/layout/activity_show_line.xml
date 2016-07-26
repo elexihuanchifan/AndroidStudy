@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.example.administrator.myapplication.widget.ShotLineView
+        android:id="@+id/shotline"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white" />
+
+    <Button
+        android:id="@+id/btn_start_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="start" />
+
+    <Button
+        android:id="@+id/btn_font_hand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="font hand" />
+
+    <Button
+        android:id="@+id/btn_back_hand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="back hand" />
+
+    <Button
+        android:id="@+id/btn_finish_hand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="finish" />
+
+    <com.example.administrator.myapplication.widget.ShotLineView
+        android:id="@+id/show_line"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@android:color/white" />
+
+</LinearLayout>
