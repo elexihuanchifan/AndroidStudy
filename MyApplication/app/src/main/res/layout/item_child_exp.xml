@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@android:color/holo_red_dark"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/tv_child_id"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_red_light"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+    </android.support.v7.widget.CardView>
+</LinearLayout>

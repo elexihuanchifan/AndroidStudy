@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.example.administrator.myapplication.activity.CalendarActivity;
 import com.example.administrator.myapplication.activity.CircleAcivity;
 import com.example.administrator.myapplication.activity.DialChartActivity;
+import com.example.administrator.myapplication.activity.DrawActivity;
 import com.example.administrator.myapplication.activity.RippleActivity;
 import com.example.administrator.myapplication.activity.ScatterActivity;
 import com.example.administrator.myapplication.activity.ShowLineActivity;
@@ -96,8 +97,13 @@ public class MainActivity extends Activity {
         findViewById(R.id.btn_value_anim).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getValueAnim();
+//                getValueAnim();
+//                startActivity(new Intent(MainActivity.this , HttpActivity.class));
+//                startActivity(new Intent(MainActivity.this , CardActivity.class));
+//                startActivity(new Intent(MainActivity.this, ExpandleActivity.class));
+                startActivity(new Intent(MainActivity.this, DrawActivity.class));
             }
+
         });
 
     }
@@ -108,7 +114,7 @@ public class MainActivity extends Activity {
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                Log.i("ValueAnimator", " === " + animation.getAnimatedValue() );
+                Log.i("ValueAnimator", " === " + animation.getAnimatedValue());
             }
         });
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
