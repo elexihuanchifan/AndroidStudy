@@ -2,22 +2,29 @@ package com.example.administrator.myapplication.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.myapplication.R;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-import com.zhy.http.okhttp.cookie.CookieJarImpl;
-import com.zhy.http.okhttp.cookie.store.CookieStore;
+import com.example.administrator.myapplication.utils.PreferenceCookieManager;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
+import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2016/7/26.
@@ -62,61 +69,153 @@ public class HttpActivity extends Activity implements View.OnClickListener {
     }
 
     private void getUserInfo() {
-        OkHttpUtils.post()
-                .url("http://192.168.199.130/MemberController/getTennisUserInfo")
-                .build()
-                .connTimeOut(5 * 1000)
-                .execute(new StringCallback() {
+//        OkHttpUtils.getInstance().getOkHttpClient().
+//        OkHttpUtils.post()
+//                .url("http://192.168.199.130/MemberController/getTennisUserInfo")
+//                .build()
+//                .connTimeOut(5 * 1000)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        tvCookies.setText(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        tvCookies.setText(response);
+//                    }
+//                });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                CookieJar cookieJar = new CookieJar() {
+                    private List<Cookie> cookies = new ArrayList<Cookie>();
+
+
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        tvCookies.setText(e.getMessage());
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        this.cookies.clear();
+                        this.cookies.addAll(cookies);
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        tvCookies.setText(response);
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        return cookies;
                     }
-                });
+                };
+                List<Cookie> cookieList = new PreferenceCookieManager(HttpActivity.this).getCookies();
+                Request.Builder builder = new Request.Builder().url("http://192.168.199.130/MemberController/getTennisUserInfo");
+                for (Cookie cookie : cookieList) {
+                    builder.addHeader("cookie", cookie.toString());
+                }
+                Request request = builder.build();
+                try {
+                    cookieJar.saveFromResponse(request.url(), cookieList);
+                    OkHttpClient okHttpClient = new OkHttpClient.Builder().cookieJar(cookieJar).build();
+                    Response response = okHttpClient.newCall(request).execute();
+                    Log.i("userinfo", response.body().string());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
     }
 
+//    private void doUpload() {
+//        String phone = edtPhone.getText().toString().trim();
+//        String varCode = edtVarCode.getText().toString().trim();
+//
+//        OkHttpUtils.post()
+//                .url("http://192.168.199.130/TLoginController/phoneVerify")
+//                .addParams("zone", "86")
+//                .addParams("phone", phone)
+//                .addParams("code", varCode)
+//                .addParams("oemType", "T0")
+//                .addParams("systemVersion", "Android")
+//                .addParams("appVersion", "1.0.0")
+//                .build()
+//                .connTimeOut(5 * 1000)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        tvResult.setText(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        tvResult.setText(response);
+//
+//                        CookieJar cookieJar = OkHttpUtils.getInstance().getOkHttpClient().cookieJar();
+//                        if (cookieJar instanceof CookieJarImpl) {
+//                            CookieStore store = ((CookieJarImpl) cookieJar).getCookieStore();
+//                            List<Cookie> cookies = store.getCookies();
+//
+//                            StringBuffer buffer = new StringBuffer();
+//                            for (Cookie cookie : cookies) {
+//                                buffer.append(cookie.name()).append(" = ").append(cookie.value()).append("\n");
+//                            }
+//
+//                            tvCookies.setText(buffer.toString());
+//                        }
+//                    }
+//                });
+//
+//    }
+
     private void doUpload() {
-        String phone = edtPhone.getText().toString().trim();
-        String varCode = edtVarCode.getText().toString().trim();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        OkHttpUtils.post()
-                .url("http://192.168.199.130/TLoginController/phoneVerify")
-                .addParams("zone", "86")
-                .addParams("phone", phone)
-                .addParams("code", varCode)
-                .addParams("oemType", "T0")
-                .addParams("systemVersion", "Android")
-                .addParams("appVersion", "1.0.0")
-                .build()
-                .connTimeOut(5 * 1000)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        tvResult.setText(e.getMessage());
-                    }
+                OkHttpClient okHttpClient = new OkHttpClient();
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        tvResult.setText(response);
-
-                        CookieJar cookieJar = OkHttpUtils.getInstance().getOkHttpClient().cookieJar();
-                        if (cookieJar instanceof CookieJarImpl) {
-                            CookieStore store = ((CookieJarImpl) cookieJar).getCookieStore();
-                            List<Cookie> cookies = store.getCookies();
-
-                            StringBuffer buffer = new StringBuffer();
-                            for (Cookie cookie : cookies) {
-                                buffer.append(cookie.name()).append(" = ").append(cookie.value()).append("\n");
+                RequestBody formBody = new FormBody.Builder()
+                        .add("zone", "86")
+                        .add("phone", "13800138000")
+                        .add("code", "0000")
+                        .add("oemType", "T0")
+                        .add("systemVersion", "Android")
+                        .add("appVersion", "1.0.0").build();
+                Request request = new Request.Builder().url("http://192.168.199.130/TLoginController/phoneVerify").post(formBody).build();
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        Log.i("message", response.message());
+//                        tvResult.setText(response.message());
+                        Headers headers = response.headers();
+                        Map<String, List<String>> data = headers.toMultimap();
+                        List<String> cookies = data.get("set-cookie");
+                        if (cookies != null) {
+                            for (int i = 0; i < cookies.size(); i++) {
+                                Log.i("cookies", cookies.get(i));
                             }
+                        }
 
-                            tvCookies.setText(buffer.toString());
+//                        tvCookies.setText(headers.get("cookies"));
+//                        Log.i("cookies" ,headers.get("Set-Cookie"));
+
+                        Log.i("body", response.body().string());
+
+//                        List<Cookie> cookieList = okHttpClient.cookieJar().loadForRequest(request.url());
+                        List<Cookie> cookieList = Cookie.parseAll(request.url(), headers);
+                        if (cookieList != null) {
+                            PreferenceCookieManager cookieManager = new PreferenceCookieManager(HttpActivity.this);
+                            for (Cookie cookie : cookieList) {
+                                cookieManager.addCookie(cookie);
+                                Log.i("cookieList", cookie.name() + "  == " + cookie.value());
+                            }
                         }
                     }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
+            }
+        }).start();
     }
 }

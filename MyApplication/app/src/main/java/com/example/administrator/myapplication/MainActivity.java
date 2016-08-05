@@ -12,7 +12,7 @@ import android.widget.Button;
 import com.example.administrator.myapplication.activity.CalendarActivity;
 import com.example.administrator.myapplication.activity.CircleAcivity;
 import com.example.administrator.myapplication.activity.DialChartActivity;
-import com.example.administrator.myapplication.activity.DrawActivity;
+import com.example.administrator.myapplication.activity.HttpActivity;
 import com.example.administrator.myapplication.activity.RippleActivity;
 import com.example.administrator.myapplication.activity.ScatterActivity;
 import com.example.administrator.myapplication.activity.ShowLineActivity;
@@ -98,10 +98,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 //                getValueAnim();
-//                startActivity(new Intent(MainActivity.this , HttpActivity.class));
+                startActivity(new Intent(MainActivity.this , HttpActivity.class));
 //                startActivity(new Intent(MainActivity.this , CardActivity.class));
 //                startActivity(new Intent(MainActivity.this, ExpandleActivity.class));
-                startActivity(new Intent(MainActivity.this, DrawActivity.class));
+//                startActivity(new Intent(MainActivity.this, DrawActivity.class));
             }
 
         });
